@@ -44,13 +44,69 @@ ul {
     padding: 0;
     text-align: right;
 
-    display: none;
+    /* Formatação para o hamburguer menu */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100px;
+    background-color: white;
+    overflow: hidden;
+    max-height: 0;
+
+    transition: max-height .3s;
 }
+
+.header-menu li:hover {
+    background-color: rgba(51 51 51 / .2);
+}
+
+.menu_btn:checked .company {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    color: red;
+
+}
+
+.menu_btn:checked~.header-menu {
+    max-height: 300vh;
+    transition: max-height 1s;
+}
+
+.menu_btn:checked+.menu_icon .nav_icon {
+    background-color: transparent;
+}
+
+.menu_btn:checked+.menu_icon .nav_icon::before {
+    transform: rotate(-45deg);
+}
+
+.menu_btn:checked+.menu_icon .nav_icon::after {
+    transform: rotate(45deg);
+}
+
+.menu_btn:focus-visible+.menu_icon {
+    outline: 2px solid black;
+    outline-offset: 3px;
+}
+
+.header-menu:focus-within {
+    max-height: 100vh;
+}
+
 
 .header-menu a {
     display: block;
-    padding: 2em 0;
+    padding: 1.5em 1em 1.5em 0;
 
+}
+
+.header-menu li {
+    padding: .5em;
 }
 
 a {
@@ -70,7 +126,14 @@ h2 {
 }
 
 .header {
-    text-align: left;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .btn {
@@ -126,10 +189,29 @@ img {
     overflow: hidden;
 }
 
+.icons li {
+    display: inline-block;
+    font-size: 2rem;
+}
+
+.icons li:not(li:first-child) {
+    margin-left: 1rem;
+}
+
 .testemunho {
     background-color: var(--gray);
     border-radius: 5px;
     padding: 1rem;
+
+    container: testemunho / inline-size;
+}
+
+.testemunhoCard {
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
 }
 
 .testemunho_thumb {
@@ -184,10 +266,6 @@ img {
     margin-bottom: 6rem;
 }
 
-/* Trabalhando com responsividade, definindo o css grid */
-/* md: min-width: 46.25em */
-/* lg: min-width: 90em */
-
 .row {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -199,10 +277,6 @@ img {
     row-gap: 3rem;
 }
 
-.testemunhos_wrapper {
-    container: containerTestemunhos / inline-size;
-}
-
 .contato.row {
     padding: 4rem 1rem;
 }
@@ -210,6 +284,11 @@ img {
 .row>.sm-12 {
     grid-column: 1 / -1;
 }
+
+/* Trabalhando com responsividade, definindo o css grid */
+/* md: min-width: 46.25em */
+/* lg: min-width: 70em */
+
 
 /* Media query MD */
 @media screen and (min-width: 46.25em) {
@@ -231,8 +310,6 @@ img {
     }
 
     .header {
-        display: flex;
-        justify-content: space-between;
         align-items: center;
     }
 
@@ -240,8 +317,16 @@ img {
         text-align: start;
     }
 
+    .menu_btn,
+    .menu_icon {
+        display: none;
+    }
+
     .header-menu {
         display: block;
+        max-height: initial;
+        background-color: transparent;
+        position: initial;
     }
 
     .header-menu li {
@@ -259,11 +344,6 @@ img {
 
     .hero_imagem {
         text-align: center;
-    }
-
-    .testemunho {
-        display: flex;
-        gap: 2rem;
     }
 
     .contato_image {
@@ -286,6 +366,10 @@ img {
 
     .company h3 {
         margin-top: 0;
+    }
+
+    .content-wrapper-center {
+        padding-left: 2rem;
     }
 
     .row {
@@ -316,6 +400,12 @@ img {
 
 /* Media query LG */
 @media screen and (min-width: 70em) {
+
+    .header-menu li:hover {
+        background-color: rgba(51 51 51 / .2);
+        border-radius: 4px;
+    }
+
     .row {
         gap: 3rem;
     }
@@ -353,11 +443,48 @@ img {
     }
 }
 
-@container containerTestemunhos (min-width:67.25em) {
-    .testemunho {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 1rem;
+@container testemunho (min-width:43.75em) {
+    .testemunhoCard {
+        flex-direction: row;
+        text-align: left;
     }
+
+}
+
+/* hamburguer menu */
+
+.menu_icon {
+    position: relative;
+    cursor: pointer;
+    text-align: left;
+    height: 25px;
+    /* user-select: none; */
+}
+
+.nav_icon {
+    background-color: #333;
+    display: inline-block;
+    height: 2px;
+    width: 24px;
+    position: relative;
+}
+
+.nav_icon::before,
+.nav_icon::after {
+    content: "";
+    display: inline-block;
+    height: 2px;
+    width: 24px;
+    position: absolute;
+    background-color: #333;
+
+    transition: transform .2s;
+}
+
+.nav_icon::before {
+    transform: translateY(-8px);
+}
+
+.nav_icon::after {
+    transform: translateY(8px);
 }
